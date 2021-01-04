@@ -38,7 +38,7 @@ export default class Home extends React.Component {
     }
 
     renderPlayer() {
-        return this.state.source ? <Player source={this.state.source} getTime={this.handleClick} /> : <div>Loading</div>;
+        return this.state.source ? <Player source={this.state.source} /> : <div>Loading</div>;
     }
 
     render() {
