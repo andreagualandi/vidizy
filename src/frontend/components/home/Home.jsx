@@ -8,8 +8,11 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            source: 'https://www.youtube.com/watch?v=efCUMvwo6Tk'
+            source: null,
+            startTime: null,
+            endTime: null,
         }
+        this.currTime = null;
     }
 
     componentDidMount() {
@@ -21,34 +24,55 @@ export default class Home extends React.Component {
         console.log('player.unmount');
     }
 
+    /* shouldComponentUpdate(nextProps, nextState) {
+        return nextState.currTime !== 
+        if (nextState.source !== this.state.player) {
+            return true;
+        }
+        if (nextProps.source !== this.props.source) {
+            return true;
+        }
+        return false;
+    } */
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('UPDATE');
+    };
+
     handleSubmit = (text) => {
-        console.log(text);
         this.setState({ source: text });
     };
 
-    handleClick = (e) => {
-        //console.log(e);
+    handleClickStart = () => {
+        const time = new Date(this.currTime * 1000).toISOString().substr(11, 12);
+        this.setState({ startTime: time });
     };
 
+    handleClickEnd = () => {
+        const time = new Date(this.currTime * 1000).toISOString().substr(11, 12);
+        this.setState({ endTime: time });
+    };
 
-
+    handleTimeUpdate = (currentTime) => this.currTime = currentTime;
 
     renderError() {
         return <span>ERROR</span>;
     }
 
     renderPlayer() {
-        return this.state.source ? <Player source={this.state.source} /> : <div>Loading</div>;
+        return <Player source={this.state.source} onTimeUpdate={this.handleTimeUpdate} />;
     }
 
     render() {
         const view = this.state.source !== 'error' ? this.renderPlayer() : this.renderError();
+        const defaultUrl = 'https://www.youtube.com/watch?v=_SvceAZ3EMY';
         return (
             <div className="home-content">
                 {/* <a href="#" onClick={this.props.history.goBack}>Back</a> */}
-                <SearchForm onSubmitCallback={this.handleSubmit} />
-                <button onClick={this.handleClick}>asd</button>
+                <SearchForm onSubmitCallback={this.handleSubmit} data={defaultUrl} placeholder='Video url' />
                 {view}
+                <SearchForm onSubmitCallback={this.handleClickStart} data={this.state.startTime} placeholder='Start time - es: 00:00:00.000>' />
+                <SearchForm onSubmitCallback={this.handleClickEnd} data={this.state.endTime} placeholder='End time - es: 00:00:00.000' />
             </div>
         );
     }
