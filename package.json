@@ -21,7 +21,8 @@
     "mediaelement": "^4.2.16",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "youtube-dl-wrap": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

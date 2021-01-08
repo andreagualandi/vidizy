@@ -54,6 +54,6 @@ export default function Player({ source, onTimeUpdate }) {
     }; */
 
 
-    return (<video id="player1" controls width="1024px" height="640px"></video>);
+    return (<video id="player1" controls width="640px" height="480px"></video>);
 
 }

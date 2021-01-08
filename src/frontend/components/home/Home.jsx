@@ -1,6 +1,7 @@
 import React from 'react'
 import Player from '../player/Player';
 import SearchForm from '../search/SearchForm'
+import { ydl } from '../../Client';
 
 import './home.less';
 
@@ -55,24 +56,21 @@ export default class Home extends React.Component {
 
     handleTimeUpdate = (currentTime) => this.currTime = currentTime;
 
-    renderError() {
-        return <span>ERROR</span>;
-    }
-
-    renderPlayer() {
-        return <Player source={this.state.source} onTimeUpdate={this.handleTimeUpdate} />;
-    }
+    handleStartClick = async () => {
+        const info = await ydl.getInfo(this.state.source);
+        console.log('info', info);
+    };
 
     render() {
-        const view = this.state.source !== 'error' ? this.renderPlayer() : this.renderError();
         const defaultUrl = 'https://www.youtube.com/watch?v=_SvceAZ3EMY';
         return (
             <div className="home-content">
                 {/* <a href="#" onClick={this.props.history.goBack}>Back</a> */}
                 <SearchForm onSubmitCallback={this.handleSubmit} data={defaultUrl} placeholder='Video url' />
-                {view}
+                <Player source={this.state.source} onTimeUpdate={this.handleTimeUpdate} />
                 <SearchForm onSubmitCallback={this.handleClickStart} data={this.state.startTime} placeholder='Start time - es: 00:00:00.000>' />
                 <SearchForm onSubmitCallback={this.handleClickEnd} data={this.state.endTime} placeholder='End time - es: 00:00:00.000' />
+                <button onClick={this.handleStartClick}>Start</button>
             </div>
         );
     }
