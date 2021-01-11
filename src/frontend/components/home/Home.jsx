@@ -1,6 +1,7 @@
 import React from 'react'
 import Player from '../player/Player';
-import SearchForm from '../search/SearchForm'
+import SearchForm from '../search/SearchForm';
+import Dropdown from '../dropdown/Dropdown';
 import { ydl } from '../../Client';
 
 import './home.less';
@@ -61,13 +62,20 @@ export default class Home extends React.Component {
         console.log('info', info);
     };
 
+    handleSelected = (selected) => {
+
+        console.log('selezione', selected);
+    };
+
     render() {
         const defaultUrl = 'https://www.youtube.com/watch?v=_SvceAZ3EMY';
+        const options = ["First Option", "Second Option", "Third Option"];
         return (
             <div className="home-content">
                 {/* <a href="#" onClick={this.props.history.goBack}>Back</a> */}
                 <SearchForm onSubmitCallback={this.handleSubmit} data={defaultUrl} placeholder='Video url' />
                 <Player source={this.state.source} onTimeUpdate={this.handleTimeUpdate} />
+                <Dropdown data={options} onSelect={this.handleSelected} placeholder='Seleziona' />
                 <SearchForm onSubmitCallback={this.handleClickStart} data={this.state.startTime} placeholder='Start time - es: 00:00:00.000>' />
                 <SearchForm onSubmitCallback={this.handleClickEnd} data={this.state.endTime} placeholder='End time - es: 00:00:00.000' />
                 <button onClick={this.handleStartClick}>Start</button>
