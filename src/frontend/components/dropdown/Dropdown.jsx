@@ -9,8 +9,8 @@ export default function Dropdown({ data, placeholder, onSelect }) {
 
     return (
         <select value={selected} onChange={onChange} className="dropdown">
-            <option value='' disabled hidden>{placeholder}</option>
-            {data.map(option => { return <option value={option} key={option} >{option}</option> })}
+            <option value='' key='-1' disabled hidden>{placeholder}</option>
+            {data.map(option => { return <option value={option.id} key={option.id} >{option.description}</option> })}
         </select>
     )
 }

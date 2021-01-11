@@ -11,7 +11,13 @@ const ydl = new YoutubeDlWrap(path.join(ydlPath, 'youtube-dl'));
 async function getInfo(args) {
     const { url } = args.data;
     console.log('Info for URL', url);
-    return ydl.getVideoInfo(url);
+    const info = await ydl.getVideoInfo(url);
+    const formats = info.formats.map((p) => ({
+        id: p.format_id,
+        description: p.fps ? `${p.format} - ${p.fps}fps` : p.format,
+    }));
+
+    return { title: info.title, formats: formats };
 }
 
 function getVersion() {
