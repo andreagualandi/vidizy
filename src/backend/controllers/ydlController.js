@@ -1,7 +1,7 @@
-"use sticts";
+"use strict";
 
 const YoutubeDlWrap = require("youtube-dl-wrap");
-//const YoutubeDlWrap = require("../Ytdl");
+
 const path = require("path");
 const { app } = require('electron');
 
@@ -24,8 +24,15 @@ function getVersion() {
     return ydl.getVersion();
 }
 
+async function getUrl(args) {
+    console.log('GET URL', args);
+    const params = ['-f', args.data.format, '-g', args.data.url];
+    const url = await ydl.execPromise(params);
+    return url.split(/\r?\n/)[0];
+}
+
 function install() {
     return YoutubeDlWrap.downloadFromWebsite(ydlPath);
 }
 
-module.exports = { getInfo, getVersion };
+module.exports = { getInfo, getVersion, getUrl };

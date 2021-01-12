@@ -2,7 +2,7 @@ import React from 'react'
 import Player from '../player/Player';
 import SearchForm from '../search/SearchForm';
 import Dropdown from '../dropdown/Dropdown';
-import { ydl } from '../../Client';
+import { app, ydl, ffmpeg } from '../../Client';
 
 import './home.less';
 
@@ -14,6 +14,7 @@ export default class Home extends React.Component {
             startTime: null,
             endTime: null,
             formats: [],
+            selected: null,
             outFile: '',
         }
         this.currTime = null;
@@ -63,12 +64,22 @@ export default class Home extends React.Component {
         const info = await ydl.getInfo(this.state.source);
         console.log('info', info);
         this.setState({ formats: info.formats });
-        this.setState({ outFile: 'test/' + info.title })
+        const path = await app.getDownloadPath(info.title);
+        this.setState({ outFile: path });
     };
 
     handleSelected = (selected) => {
-
         console.log('selezione', selected);
+        this.setState({ selected: selected });
+    };
+
+    handleClickDownload = async (fileName) => {
+        this.setState({ outFile: fileName });
+        const downloadUrl = await ydl.getUrl(this.state.source, this.state.selected);
+        console.log('DOWNLOAD URL', downloadUrl);
+        const info = await ffmpeg.cut({ input: downloadUrl, output: fileName, start: this.state.startTime, end: this.state.endTime });
+        console.log('start download', info);
+
     };
 
 
@@ -81,7 +92,7 @@ export default class Home extends React.Component {
                 <Dropdown data={this.state.formats} onSelect={this.handleSelected} placeholder='Seleziona' />
                 <SearchForm onSubmitCallback={this.handleClickStart} data={this.state.startTime} placeholder='Start time - es: 00:00:00.000>' />
                 <SearchForm onSubmitCallback={this.handleClickEnd} data={this.state.endTime} placeholder='End time - es: 00:00:00.000' />
-                <SearchForm onSubmitCallback={this.handleClickEnd} data={this.state.outFile} placeholder='Output file' />
+                <SearchForm onSubmitCallback={this.handleClickDownload} data={this.state.outFile} placeholder='Output file' />
                 <button onClick={this.handleGetInfoClick}>Get info</button>
             </div>
         );

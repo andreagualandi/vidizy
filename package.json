@@ -18,6 +18,7 @@
   "author": "Andrea Gualandi",
   "license": "ISC",
   "dependencies": {
+    "ffmpeg-static": "^4.2.7",
     "mediaelement": "^4.2.16",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
