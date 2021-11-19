@@ -51,7 +51,7 @@ export default [
             }), */
         ]
     },
-    // svelte
+    // render
     {
         input: 'src/frontend/index.js',
         output: {
