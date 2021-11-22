@@ -19,6 +19,8 @@ function createWindow() {
         width: 1024,
         height: 768,
         webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
         },
         //icon: path.join(__dirname, 'public/favicon.png'),

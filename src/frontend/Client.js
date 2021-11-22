@@ -1,9 +1,6 @@
-const { ipcRenderer } = window;
-
 async function call(endpoint, action, data = {}) {
     try {
-        console.log(window);
-        return await ipcRenderer.invoke(endpoint, { action, data });
+        return await window.api.invoke(endpoint, { action, data });
     } catch (e) {
         console.error('Api call failed', e);
         return null;

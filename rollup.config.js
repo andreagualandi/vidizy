@@ -29,29 +29,6 @@ function serve() {
 }
 
 export default [
-    // electron
-    /* {
-        input: 'main.js',
-        output: [
-            {
-                file: 'public/build/main.js',
-                format: 'cjs',
-                sourcemap: true
-            },
-        ],
-        plugins: [
-            resolve(),
-            commonjs({
-                include: './node_modules/**',
-            }),
-            copy({
-                targets: [
-                    { src: './src/index.html', dest: './build' }
-                ]
-            }), 
-        ]
-    }, */
-    // render
     {
         input: 'src/frontend/index.js',
         output: {

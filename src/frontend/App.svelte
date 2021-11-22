@@ -3,9 +3,8 @@
 	import { app } from "./Client.js";
 
 	async function handleClick() {
-		console.log("ciao");
 		const r = await app.getDownloadPath("pippo");
-		console.log("asd", r);
+		console.log("risultato", r);
 	}
 </script>
 

@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
+    "startOld": "sirv public --no-clear",
+    "start": "npm run build && electron main.js",
     "electron": "wait-on http://localhost:5000 && electron .",
     "electron-dev": "concurrently \"npm run dev\" \"npm run electron\"",
     "preelectron-pack": "npm run build",
