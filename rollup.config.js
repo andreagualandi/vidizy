@@ -4,6 +4,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -58,6 +59,13 @@ export default [
                 dedupe: ['svelte']
             }),
             commonjs(),
+            copy({
+                targets: [
+                    { src: 'src/frontend/index.html', dest: 'public' },
+                    { src: 'src/frontend/global.css', dest: 'public' },
+                    { src: 'node_modules/mediaelement/build/mejs-controls.svg', dest: 'public' }
+                ]
+            }),
 
             // In dev mode, call `npm run start` once
             // the bundle has been generated

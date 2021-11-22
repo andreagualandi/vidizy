@@ -1,16 +1,26 @@
 <script>
-	let text = "";
-	import { app } from "./Client.js";
+	import InputSubmit from "./components/InputSubmit.svelte";
+	import Player from "./components/Player.svelte";
 
-	async function handleClick() {
-		const r = await app.getDownloadPath("pippo4");
-		console.log("risultato", r);
+	let src = "";
+	let time = 0;
+	function handleSubmit(url) {
+		console.log("get url", url);
+		src = url;
+	}
+
+	function handleTime(currTime) {
+		time = new Date(currTime * 1000).toISOString().substr(11, 12);
 	}
 </script>
 
 <main>
-	<h1>test {text}</h1>
-	<button on:click={handleClick}> click </button>
+	<InputSubmit onSubmit={handleSubmit} placeholder="Video url" />
+	<Player {src} onTime={handleTime} />
+
+	<input value={time} />
+
+	<p>test: https://www.youtube.com/watch?v=xr1FWNKWQIU</p>
 </main>
 
 <style>
@@ -19,8 +29,5 @@
 		flex-flow: column;
 		justify-content: center;
 		align-items: center;
-	}
-	button {
-		font-size: 2em;
 	}
 </style>
