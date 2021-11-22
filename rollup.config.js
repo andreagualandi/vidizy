@@ -30,7 +30,7 @@ function serve() {
 
 export default [
     // electron
-    {
+    /* {
         input: 'main.js',
         output: [
             {
@@ -44,13 +44,13 @@ export default [
             commonjs({
                 include: './node_modules/**',
             }),
-            /* copy({
+            copy({
                 targets: [
                     { src: './src/index.html', dest: './build' }
                 ]
-            }), */
+            }), 
         ]
-    },
+    }, */
     // render
     {
         input: 'src/frontend/index.js',
