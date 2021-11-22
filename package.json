@@ -10,8 +10,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "startOld": "sirv public --no-clear",
-    "start": "npm run build && electron main.js",
+    "start": "sirv public --no-clear",
     "electron": "wait-on http://localhost:5000 && electron .",
     "electron-dev": "concurrently \"npm run dev\" \"npm run electron\"",
     "preelectron-pack": "npm run build",
@@ -20,7 +19,6 @@
   "author": "Andrea Gualandi",
   "license": "ISC",
   "dependencies": {
-    "electron-serve": "^1.1.0",
     "ffmpeg-static": "^4.4.0",
     "mediaelement": "^5.0.4",
     "youtube-dl-wrap": "^2.1.1"
@@ -31,6 +29,7 @@
     "concurrently": "^6.4.0",
     "electron": "^16.0.0",
     "electron-builder": "^22.13.1",
+    "electron-serve": "^1.1.0",
     "rollup": "^2.60.0",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.5",

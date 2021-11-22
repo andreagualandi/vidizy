@@ -3,7 +3,7 @@
 	import { app } from "./Client.js";
 
 	async function handleClick() {
-		const r = await app.getDownloadPath("pippo");
+		const r = await app.getDownloadPath("pippo4");
 		console.log("risultato", r);
 	}
 </script>

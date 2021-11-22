@@ -2,7 +2,8 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
-const loadURL = serve({ directory: 'public' });
+const loadUrl = serve({ directory: 'public' });
+
 require('./src/backend/index');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -27,20 +28,14 @@ function createWindow() {
         show: false
     });
 
-    // This block of code is intended for development purpose only.
-    // Delete this entire block of code when you are ready to package the application.
-    mainWindow.loadFile(path.join(__dirname, "public/index.html"));
-    if (isDev()) {
-        //mainWindow.loadURL('http://localhost:5000/');
 
-        //mainWindow.loadFile(path.resolve(__dirname, 'public/index.html'));
+
+    if (isDev()) {
+        mainWindow.loadURL(`http://localhost:5000`);
         mainWindow.webContents.openDevTools();
     } else {
-        loadURL(mainWindow);
+        loadUrl(mainWindow);
     }
-
-    // Uncomment the following line of code when app is ready to be packaged.
-    // loadURL(mainWindow);
 
     // Open the DevTools and also disable Electron Security Warning.
     // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
@@ -58,6 +53,7 @@ function createWindow() {
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
     });
+
 }
 
 // This method will be called when Electron has finished
