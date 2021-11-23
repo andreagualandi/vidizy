@@ -10,14 +10,21 @@ const ydl = new YoutubeDlWrap(path.join(ydlPath, 'youtube-dl'));
 
 async function getInfo(args) {
     const { url } = args.data;
-    console.log('Info for URL', url);
     const info = await ydl.getVideoInfo(url);
-    const formats = info.formats.map((p) => ({
-        id: p.format_id,
-        description: p.fps ? `${p.format} - ${p.fps}fps` : p.format,
-    }));
+    console.log('Info for URL', url, info);
 
-    return { title: info.title, formats: formats };
+    //get only video
+    let result = [];
+    for (let item of info.formats) {
+        if (item.vcodec !== 'none') {
+            result.push({
+                id: item.format_id,
+                description: item.fps ? `${item.format} - ${item.fps}fps` : item.format,
+            });
+        }
+    }
+
+    return { title: info.title, duration: info.duration, thumbnail: info.thumbnail, formats: result, url: info.url };
 }
 
 function getVersion() {
