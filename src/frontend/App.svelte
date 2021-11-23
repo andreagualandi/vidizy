@@ -36,6 +36,7 @@
 	<div class="player">
 		<MyPlayer {title} src={videoSrc} />
 		<RangeSlider
+			class="rangeSlider rangeFloat"
 			range
 			values={[startTime, endTime]}
 			min={startTime}
@@ -69,5 +70,11 @@
 		/* display: flex;
 		flex-flow: column;
 		width: 100vh; */
+	}
+
+	* :global(.rangeSlider .rangeFloat) {
+		opacity: 1;
+		color: red;
+		background: transparent;
 	}
 </style>
