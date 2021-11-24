@@ -1,6 +1,7 @@
 <script>
     export let title = "Video";
     export let src;
+    export let poster;
     // These values are bound to properties of the video
     let time = 0;
     let duration;
@@ -56,7 +57,7 @@
 
 <div>
     <video
-        poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+        {poster}
         {src}
         on:mousemove={handleMove}
         on:touchmove|preventDefault={handleMove}

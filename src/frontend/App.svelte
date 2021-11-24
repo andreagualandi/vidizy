@@ -1,29 +1,28 @@
 <script>
+	import { fade } from "svelte/transition";
 	import { app, ydl } from "./Client";
 	import InputSubmit from "./components/InputSubmit.svelte";
 	import MyPlayer from "./components/MyPlayer.svelte";
 	import Select from "./components/Select.svelte";
 	import RangeSlider from "svelte-range-slider-pips";
 
-	let src = "";
 	let startTime = 0;
 	let endTime = 100;
-	let duration = 0;
-	let formats = [];
-	let title = "";
 	let outFile = "";
-	let videoSrc = "";
 	let selectedFormat = {};
+	let info;
 	async function handleLoad(url) {
 		console.log("get url", url);
-		src = url;
-		const info = await ydl.getInfo(url);
-		title = info.title;
-		formats = info.formats;
+		info = await ydl.getInfo(url);
 		endTime = info.duration;
-		videoSrc = info.url;
 		outFile = await app.getDownloadPath(info.title);
-		console.log(formats);
+	}
+
+	async function handleOpenFolder() {
+		const result = await app.showSaveDialog();
+		if (!result.canceled) {
+			outFile = result.filePath;
+		}
 	}
 
 	function timeFormatter(currTime) {
@@ -33,26 +32,39 @@
 
 <main>
 	<InputSubmit onSubmit={handleLoad} placeholder="Video url" />
-	<div class="player">
-		<MyPlayer {title} src={videoSrc} />
-		<RangeSlider
-			class="rangeSlider rangeFloat"
-			range
-			values={[startTime, endTime]}
-			min={startTime}
-			max={endTime}
-			formatter={timeFormatter}
-			first="label"
-			last="label"
-			float
-		/>
-		<Select options={formats} bind:selected={selectedFormat} />
-	</div>
+	{#if info}
+		<div class="player" transition:fade>
+			<MyPlayer
+				title={info.title}
+				src={info.url}
+				poster={info.thumbnail}
+			/>
+			<RangeSlider
+				class="rangeSlider rangeFloat"
+				range
+				values={[startTime, endTime]}
+				min={startTime}
+				max={endTime}
+				formatter={timeFormatter}
+				first="label"
+				last="label"
+				float
+			/>
+			<Select options={info.formats} bind:selected={selectedFormat} />
+		</div>
+	{:else}
+		<p>placeholder</p>
+	{/if}
 
-	<p>test: https://www.youtube.com/watch?v=xr1FWNKWQIU - {duration}</p>
+	<InputSubmit
+		onSubmit={handleOpenFolder}
+		text={outFile}
+		placeholder="Output"
+	/>
+
 	<button on:click={() => console.log("execute", selectedFormat)}>
-		execute</button
-	>
+		execute
+	</button>
 </main>
 
 <style>

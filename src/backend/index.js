@@ -2,22 +2,14 @@
 
 const ipc = require('electron').ipcMain
 
-const { getInfo, getUrl } = require('./controllers/ydlController');
-const { getVersion, cut } = require('./controllers/ffmpegController');
-const { getDownloadPath } = require('./controllers/AppController');
+const ydlController = require('./controllers/ydlController');
+const ffmpegController = require('./controllers/ffmpegController');
+const AppController = require('./controllers/appController');
 
 const routes = {
-    ydl: {
-        getInfo: getInfo,
-        getUrl: getUrl,
-    },
-    ffmpeg: {
-        getVersion: getVersion,
-        cut: cut,
-    },
-    app: {
-        getDownloadPath: getDownloadPath,
-    }
+    ydl: ydlController,
+    ffmpeg: ffmpegController,
+    app: AppController
 };
 
 async function ydlRoute(event, args) {

@@ -1,7 +1,7 @@
 <script>
     export let onSubmit;
     export let placeholder = "";
-    let text = "https://www.youtube.com/watch?v=xr1FWNKWQIU";
+    export let text = "https://www.youtube.com/watch?v=xr1FWNKWQIU";
 </script>
 
 <form class="input-form" on:submit|preventDefault={onSubmit(text)}>

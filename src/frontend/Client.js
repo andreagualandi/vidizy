@@ -19,6 +19,7 @@ const ffmpeg = {
 
 const app = {
     getDownloadPath: (fileName) => call('api-app', 'getDownloadPath', { fileName }),
+    showSaveDialog: () => call('api-app', 'showSaveDialog'),
 }
 
 export { ydl, ffmpeg, app };
