@@ -31,5 +31,6 @@ button {
 }
 
 button:hover{
-    background-color: #515161;
+    /*background-color: #515161;*/
+    background-color: #5863ad;
 }
