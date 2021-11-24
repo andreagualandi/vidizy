@@ -3,4 +3,33 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+    /* background: #202020;
+    color: #a8a8a8;*/
+    background-color: #2E2F3A;
+    color: #B4B3BA;
+}
+
+input{
+    background: #444452;
+    color: #B4B3BA;
+    border: 1px solid hsl(0deg 0% 19%);
+    border-radius: 2px;
+}
+
+input:focus-visible{
+    outline-style: solid;
+    outline-color: #fff;
+}
+
+button {
+    border: 1px solid hsl(0deg 0% 19%);
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 0;
+    background-color: #444f97;
+    color: #B4B3BA;
+}
+
+button:hover{
+    background-color: #515161;
 }

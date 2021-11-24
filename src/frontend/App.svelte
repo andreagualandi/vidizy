@@ -45,9 +45,6 @@
 			first="label"
 			last="label"
 			float
-			pips
-			all
-			rest={false}
 		/>
 		<Select options={formats} bind:selected={selectedFormat} />
 	</div>
@@ -64,6 +61,7 @@
 		flex-flow: column;
 		justify-content: center;
 		align-items: center;
+		padding: 20px;
 	}
 
 	.player {
@@ -76,5 +74,9 @@
 		opacity: 1;
 		color: red;
 		background: transparent;
+		top: 3.5em;
+	}
+	* :global(.rangeSlider .rangeHandle.active .rangeFloat) {
+		top: 3.5em;
 	}
 </style>

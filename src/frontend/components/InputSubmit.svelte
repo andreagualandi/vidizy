@@ -1,32 +1,37 @@
 <script>
     export let onSubmit;
     export let placeholder = "";
-    export let layout = "right";
     let text = "https://www.youtube.com/watch?v=xr1FWNKWQIU";
 </script>
 
-<form
-    class="input-url {layout === 'left' ? 'button-left' : ''}"
-    on:submit|preventDefault={onSubmit(text)}
->
+<form class="input-form" on:submit|preventDefault={onSubmit(text)}>
     <input bind:value={text} {placeholder} />
     <button type="submit">Load</button>
 </form>
 
 <style>
-    .input-url {
+    .input-form {
         display: inline-flex;
         justify-content: center;
-        padding: 20px;
         width: 100vh;
+        font-size: 1.2em;
     }
 
-    .input-url input {
+    .input-form input {
         width: 100%;
         height: 2em;
+        font-size: inherit;
+        border-radius: 2px 0px 0px 2px;
+        border: none;
     }
 
-    .button-left {
-        flex-direction: row-reverse;
+    .input-form input:focus-visible {
+        outline: none;
+    }
+
+    .input-form button {
+        font-size: inherit;
+        border-radius: 0px 2px 2px 0px;
+        border: none;
     }
 </style>
