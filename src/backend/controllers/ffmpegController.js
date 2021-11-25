@@ -5,7 +5,7 @@ const ffmpeg = require('../lib/ffmpeg');
 async function cut(args) {
     const { input, output } = args.data;
     console.log('cut params:', input, output);
-    const params = ['-i', `"${input}"`];
+    const params = ['-i', input];
     if (args.data.start) {
         params.unshift('-ss', args.data.start);
     }
@@ -14,7 +14,7 @@ async function cut(args) {
         params.push('-to', args.data.end);
     }
 
-    params.push('-c', 'copy', `"${output}"`)
+    params.push('-c', 'copy', output)
 
     //return params;
     return ffmpeg.execute(params);

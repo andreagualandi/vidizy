@@ -13,16 +13,16 @@ async function getInfo(args) {
     const info = await ydl.getVideoInfo(url);
     console.log('Info for URL', url, info);
 
-    //get only video
-    let result = [];
-    for (let item of info.formats) {
-        if (item.vcodec !== 'none') {
-            result.push({
-                id: item.format_id,
-                description: item.fps ? `${item.format} - ${item.fps}fps` : item.format,
-            });
-        }
-    }
+    const result = info.formats.map(item => {
+        const formatInfo = item.fps ? `${item.format_note} - ${item.fps}fps` : item.format_note;
+
+        return {
+            id: item.format_id,
+            description: `${item.ext} - ${formatInfo} - (vcodec: ${item.vcodec} / acodec: ${item.acodec})`,
+            ext: item.ext,
+            url: item.url,
+        };
+    });
 
     return { title: info.title, duration: info.duration, thumbnail: info.thumbnail, formats: result, url: info.url };
 }
