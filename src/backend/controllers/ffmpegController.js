@@ -6,19 +6,12 @@ async function cut(args) {
     const { input, output } = args.data;
     console.log('cut params:', input, output);
     const params = ['-i', input];
-    if (args.data.start) {
-        params.unshift('-ss', args.data.start);
-    }
-
-    if (args.data.end) {
-        params.push('-to', args.data.end);
-    }
-
+    //ss befor -i for fast encode with less precision. ss after -i for more precision but much high encode time
+    args.data.start && params.unshift('-ss', args.data.start);
+    args.data.duration && params.push('-t', args.data.duration);
     params.push('-c', 'copy', output)
 
-    //return params;
     return ffmpeg.execute(params);
-
 }
 
 function getVersion() {

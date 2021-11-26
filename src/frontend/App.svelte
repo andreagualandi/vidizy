@@ -45,20 +45,22 @@
 	}
 
 	async function handleExecute() {
-		/* console.log({
+		const params = {
 			input: selectedFormat.url,
 			output: "/home/andrea/Scaricati/test.mp4",
-			start: timeFormatter(rangeValues[0]),
-			end: timeFormatter(rangeValues[1]),
-		});
-		return; */
-		const info = await ffmpeg.cut({
-			input: selectedFormat.url,
-			output: "/home/andrea/Scaricati/test.mp4",
-			start: timeFormatter(rangeValues[0]),
-			end: timeFormatter(rangeValues[1]),
-		});
-		console.log("downloading", info);
+		};
+
+		if (rangeValues[0] !== 0) {
+			params.start = timeFormatter(rangeValues[0]);
+		}
+
+		if (rangeValues[1] !== info.duration) {
+			params.duration = timeFormatter(rangeValues[1] - rangeValues[0]);
+		}
+		console.log("cut params", params);
+
+		const result = await ffmpeg.cut(params);
+		console.log("ffmpeg cut", result);
 	}
 
 	function timeFormatter(currTime) {

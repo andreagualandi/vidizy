@@ -4,8 +4,6 @@
     export let rangeValues;
     export let formatter;
 
-    let start;
-    let end;
     let max = rangeValues[1];
 
     $: diff = formatter(rangeValues[1] - rangeValues[0]);
