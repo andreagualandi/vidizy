@@ -48,6 +48,7 @@
 		const params = {
 			input: selectedFormat.url,
 			output: "/home/andrea/Scaricati/test.mp4",
+			overwrite: true,
 		};
 
 		if (rangeValues[0] !== 0) {

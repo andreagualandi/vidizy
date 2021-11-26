@@ -10,6 +10,7 @@ async function cut(args) {
     args.data.start && params.unshift('-ss', args.data.start);
     args.data.duration && params.push('-t', args.data.duration);
     params.push('-c', 'copy', output)
+    args.data.overwrite && params.push('-y');
 
     return ffmpeg.execute(params);
 }
