@@ -2,6 +2,7 @@
 
 const ffmpeg = require('../lib/ffmpeg');
 
+
 async function cut(args) {
     const { input, output } = args.data;
     console.log('cut params:', input, output);
@@ -19,4 +20,8 @@ function getVersion() {
     return ffmpeg.getVersion();
 }
 
-module.exports = { cut, getVersion };
+function stop() {
+    return ffmpeg.kill();
+}
+
+module.exports = { cut, getVersion, stop };

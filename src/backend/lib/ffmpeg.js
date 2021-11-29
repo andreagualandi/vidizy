@@ -3,11 +3,11 @@
 const { spawn, execFile } = require('child_process');
 
 const cmd = require('ffmpeg-static');
-
+let proc = null;
 
 function execute(args) {
     console.log('FFMPEG args', args, args.join(' '));
-    const proc = spawn(cmd, args);
+    proc = spawn(cmd, args);
 
     proc.stdout.on('data', function(data) {
         console.log(data);
@@ -18,10 +18,14 @@ function execute(args) {
         console.log(data);
     });
 
-    proc.on('close', function() {
-        console.log('finished');
+    proc.on('close', function(code, signal) {
+        console.log(`Process terminated due to receipt of signal ${signal}`)
     });
 
+}
+
+function kill() {
+    proc && proc.kill();
 }
 
 function getVersion() {
@@ -37,4 +41,4 @@ function execPromise(args = [], options = {}) {
 }
 
 
-module.exports = { getVersion, execute };
+module.exports = { getVersion, execute, kill };
