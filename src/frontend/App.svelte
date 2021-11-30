@@ -7,12 +7,10 @@
 	import Cutter from "./components/Cutter.svelte";
 	import { afterUpdate } from "svelte";
 
-	let startTime = 0;
-	let endTime = 100;
 	let outFile = "";
 	let selectedFormat = {};
 	let info;
-	let src;
+	let outText = "";
 
 	/*-- debug --*/
 	info = {
@@ -27,14 +25,13 @@
 	let rangeValues = [0, info.duration];
 
 	async function handleLoad(url) {
-		/* const t = await ydl.getUrl(url, selectedFormat.id);
-		console.log("download from", t);
-		return; */
 		console.log("get url", url);
 		info = await ydl.getInfo(url);
-		src = url;
-		endTime = info.duration;
 		outFile = await app.getDownloadPath(info.title);
+	}
+
+	async function killProcess() {
+		await ffmpeg.stop();
 	}
 
 	async function handleOpenFolder() {
@@ -95,6 +92,8 @@
 			/>
 
 			<button on:click={handleExecute}> execute </button>
+			<button on:click={killProcess}> stop </button>
+			<textarea value={outText} />
 		</div>
 	{:else}
 		<p>placeholder</p>
