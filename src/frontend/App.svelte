@@ -5,7 +5,7 @@
 	import MyPlayer from "./components/MyPlayer.svelte";
 	import Select from "./components/Select.svelte";
 	import Cutter from "./components/Cutter.svelte";
-	import { afterUpdate } from "svelte";
+	import { afterUpdate, onMount } from "svelte";
 
 	let outFile = "";
 	let selectedFormat = {};
@@ -23,6 +23,10 @@
 	};
 
 	let rangeValues = [0, info.duration];
+
+	onMount(async () => {
+		ffmpeg.setProgressCallback(progress);
+	});
 
 	async function handleLoad(url) {
 		console.log("get url", url);
@@ -63,6 +67,11 @@
 
 	function timeFormatter(currTime) {
 		return new Date(currTime * 1000).toISOString().substr(11, 12);
+	}
+
+	function progress(data) {
+		console.log("progress", data);
+		outText += JSON.stringify(data) + "\n";
 	}
 
 	afterUpdate(() => {

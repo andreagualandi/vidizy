@@ -1,26 +1,45 @@
 "use strict";
 
 const { spawn, execFile } = require('child_process');
-const { BrowserWindow, MessageChannelMain } = require('electron');
-const { hmsToSeconds } = require('./utils');
+const { hmsToSeconds, strToSeconds } = require('./utils');
 
 const cmd = require('ffmpeg-static');
 let proc = null;
+/* let duration;
+let time;
+let progress; */
 
 //NOTE: ffmpeg use stderr as output
-function execute(args) {
+function execute(args, callback) {
     console.log('FFMPEG args', args, args.join(' '));
     proc = spawn(cmd, args);
-    const port = getPortForProgress();
-    let duration = null;
-    let time = 0;
-    let progress = 0;
 
     proc.stderr.setEncoding("utf8")
-    proc.stderr.on('data', (data) => {
+    proc.stderr.on('data', callback);
+
+    proc.on('close', (code, signal) => {
+        console.log(`Process terminated due to receipt of signal ${signal}`)
+    });
+
+}
+
+async function cut(input, output, overwrite = true, start = null, duration = null, callback) {
+    console.log('cut params:', input, output, start, duration);
+    const params = ['-i', input];
+    //ss befor -i for fast encode with less precision. ss after -i for more precision but much high encode time
+    start && params.unshift('-ss', start);
+    duration && params.push('-t', duration);
+    params.push('-c', 'copy', output)
+    overwrite && params.push('-y');
+
+    let time = 0;
+    let progress = 0;
+    duration = strToSeconds(duration);
+
+    return execute(params, (data) => {
         console.log(data);
         let parse = null;
-        if (duration === null) {
+        if (!duration) {
             parse = data.match(/Duration: (\d{2}):(\d{2}):(\d{2})/);
             if (parse) {
                 duration = hmsToSeconds(parse[1], parse[2], parse[3]);
@@ -29,17 +48,12 @@ function execute(args) {
             parse = data.match(/time=(\d{2}):(\d{2}):(\d{2})/);
             if (parse && duration) {
                 time = hmsToSeconds(parse[1], parse[2], parse[3]);
-                progress = (time / duration) * 100;
-                port.postMessage({ progress: progress });
-
+                progress = Math.ceil(time / duration * 100);
+                console.log('calcolo progress', time, duration, progress)
             }
         }
+        callback(progress);
     });
-
-    proc.on('close', (code, signal) => {
-        console.log(`Process terminated due to receipt of signal ${signal}`)
-    });
-
 }
 
 function kill() {
@@ -58,18 +72,4 @@ function execPromise(args = [], options = {}) {
     });
 }
 
-function getPortForProgress() {
-    const window = BrowserWindow.getFocusedWindow();
-    const { port1, port2 } = new MessageChannelMain();
-
-    port2.on('message', (e) => {
-        console.log('Data from renderer');
-    })
-    port2.start();
-    window.webContents.postMessage('main-world-port', null, [port1]);
-    return port2;
-}
-
-
-
-module.exports = { getVersion, execute, kill };
+module.exports = { getVersion, kill, cut };
