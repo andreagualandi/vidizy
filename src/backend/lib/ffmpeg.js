@@ -1,26 +1,25 @@
 "use strict";
 
 const { spawn, execFile } = require('child_process');
-const { hmsToSeconds, strToSeconds } = require('./utils');
+const { hmsToSeconds, strToSeconds, roundToTwo } = require('./utils');
 
 const cmd = require('ffmpeg-static');
 let proc = null;
-/* let duration;
-let time;
-let progress; */
 
 //NOTE: ffmpeg use stderr as output
 function execute(args, callback) {
-    console.log('FFMPEG args', args, args.join(' '));
-    proc = spawn(cmd, args);
+    return new Promise((resolve, reject) => {
+        console.log('FFMPEG args', args, args.join(' '));
+        proc = spawn(cmd, args);
 
-    proc.stderr.setEncoding("utf8")
-    proc.stderr.on('data', callback);
+        proc.stderr.setEncoding("utf8")
+        proc.stderr.on('data', callback);
 
-    proc.on('close', (code, signal) => {
-        console.log(`Process terminated due to receipt of signal ${signal}`)
-    });
-
+        proc.on('close', (code, signal) => {
+            console.log(`Process terminated due to receipt of signal ${signal}`)
+            resolve();
+        });
+    })
 }
 
 async function cut(input, output, overwrite = true, start = null, duration = null, callback) {
@@ -48,8 +47,7 @@ async function cut(input, output, overwrite = true, start = null, duration = nul
             parse = data.match(/time=(\d{2}):(\d{2}):(\d{2})/);
             if (parse && duration) {
                 time = hmsToSeconds(parse[1], parse[2], parse[3]);
-                progress = Math.ceil(time / duration * 100);
-                console.log('calcolo progress', time, duration, progress)
+                progress = roundToTwo(time / duration);
             }
         }
         callback(progress);

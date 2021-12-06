@@ -1,5 +1,7 @@
 <script>
 	import { fade } from "svelte/transition";
+	import { tweened } from "svelte/motion";
+	import { cubicOut } from "svelte/easing";
 	import { app, ffmpeg, ydl } from "./Client";
 	import InputSubmit from "./components/InputSubmit.svelte";
 	import MyPlayer from "./components/MyPlayer.svelte";
@@ -10,7 +12,7 @@
 	let outFile = "";
 	let selectedFormat = {};
 	let info;
-	let outText = "";
+	const progress = tweened(0, { duration: 400, easing: cubicOut });
 
 	/*-- debug --*/
 	info = {
@@ -25,7 +27,7 @@
 	let rangeValues = [0, info.duration];
 
 	onMount(async () => {
-		ffmpeg.setProgressCallback(progress);
+		ffmpeg.setProgressCallback(handleProgress);
 	});
 
 	async function handleLoad(url) {
@@ -69,9 +71,9 @@
 		return new Date(currTime * 1000).toISOString().substr(11, 12);
 	}
 
-	function progress(data) {
+	function handleProgress(data) {
 		console.log("progress", data);
-		outText += JSON.stringify(data) + "\n";
+		progress.set(data);
 	}
 
 	afterUpdate(() => {
@@ -102,7 +104,10 @@
 
 			<button on:click={handleExecute}> execute </button>
 			<button on:click={killProcess}> stop </button>
-			<textarea value={outText} />
+			<div>
+				<p>{$progress}</p>
+				<progress value={$progress} />
+			</div>
 		</div>
 	{:else}
 		<p>placeholder</p>

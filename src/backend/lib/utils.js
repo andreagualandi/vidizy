@@ -12,4 +12,8 @@ function strToSeconds(string) {
     return hmsToSeconds(time[1], time[2], time[3]);
 }
 
-module.exports = { hmsToSeconds, strToSeconds };
+function roundToTwo(num) {
+    return +(Math.round(num + "e+2") + "e-2");
+}
+
+module.exports = { hmsToSeconds, strToSeconds, roundToTwo };
