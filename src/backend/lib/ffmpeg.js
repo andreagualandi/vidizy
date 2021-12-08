@@ -1,7 +1,7 @@
 "use strict";
 
 const { spawn, execFile } = require('child_process');
-const { hmsToSeconds, strToSeconds, roundToTwo } = require('./utils');
+const { hmsToSeconds, strToSeconds, roundToTwo, secondsToHms } = require('./utils');
 
 const cmd = require('ffmpeg-static');
 let proc = null;
@@ -33,24 +33,24 @@ async function cut(input, output, overwrite = true, start = null, duration = nul
 
     let time = 0;
     let progress = 0;
+    let estimation = 0;
     duration = strToSeconds(duration);
 
     return execute(params, (data) => {
         console.log(data);
-        let parse = null;
         if (!duration) {
-            parse = data.match(/Duration: (\d{2}):(\d{2}):(\d{2})/);
-            if (parse) {
-                duration = hmsToSeconds(parse[1], parse[2], parse[3]);
-            }
+            duration = parseDuration(data);
         } else {
-            parse = data.match(/time=(\d{2}):(\d{2}):(\d{2})/);
-            if (parse && duration) {
-                time = hmsToSeconds(parse[1], parse[2], parse[3]);
+            time = parseTime(data);
+            if (time && duration) {
                 progress = roundToTwo(time / duration);
+                let speed = parseSpeed(data);
+                if (!isNaN(speed)) {
+                    estimation = secondsToHms((duration - time) / speed);
+                }
             }
         }
-        callback(progress);
+        callback({ progress: progress, estimation: estimation });
     });
 }
 
@@ -68,6 +68,21 @@ function execPromise(args = [], options = {}) {
             error ? reject({ error: error, stderr: stderr }) : resolve(stdout);
         });
     });
+}
+
+function parseDuration(data) {
+    let parse = data.match(/Duration: (\d{2}):(\d{2}):(\d{2})/);
+    return parse ? hmsToSeconds(parse[1], parse[2], parse[3]) : 0;
+}
+
+function parseTime(data) {
+    let parse = data.match(/time=(\d{2}):(\d{2}):(\d{2})/);
+    return parse ? hmsToSeconds(parse[1], parse[2], parse[3]) : 0;
+}
+
+function parseSpeed(data) {
+    let parse = data.match(/speed=(.+)x/);
+    return parseFloat(parse[1]);
 }
 
 module.exports = { getVersion, kill, cut };

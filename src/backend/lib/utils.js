@@ -16,4 +16,8 @@ function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
 }
 
-module.exports = { hmsToSeconds, strToSeconds, roundToTwo };
+function secondsToHms(seconds) {
+    return new Date(seconds * 1000).toISOString().substr(14, 5)
+}
+
+module.exports = { hmsToSeconds, strToSeconds, roundToTwo, secondsToHms };

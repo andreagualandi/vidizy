@@ -1,18 +1,20 @@
 <script>
 	import { fade } from "svelte/transition";
-	import { tweened } from "svelte/motion";
-	import { cubicOut } from "svelte/easing";
+
 	import { app, ffmpeg, ydl } from "./Client";
 	import InputSubmit from "./components/InputSubmit.svelte";
 	import MyPlayer from "./components/MyPlayer.svelte";
 	import Select from "./components/Select.svelte";
 	import Cutter from "./components/Cutter.svelte";
+	import Progress from "./components/Progress.svelte";
 	import { afterUpdate, onMount } from "svelte";
 
 	let outFile = "";
 	let selectedFormat = {};
 	let info;
-	const progress = tweened(0, { duration: 400, easing: cubicOut });
+	let working = false;
+	let progressValue = 0;
+	let progressText = "starting";
 
 	/*-- debug --*/
 	info = {
@@ -31,12 +33,30 @@
 	});
 
 	async function handleLoad(url) {
+		working = true;
+
+		// Returns a Promise that resolves after "ms" Milliseconds
+		const timer = (ms) => new Promise((res) => setTimeout(res, ms));
+
+		async function load() {
+			// We need to wrap the loop into an async function for this to work
+			for (var i = 1; i < 11; i++) {
+				progressValue = i / 10;
+				progressText = "running...";
+				await timer(300); // then the created Promise can be awaited
+			}
+		}
+
+		load();
+		return;
+
 		console.log("get url", url);
 		info = await ydl.getInfo(url);
 		outFile = await app.getDownloadPath(info.title);
 	}
 
 	async function killProcess() {
+		working = false;
 		await ffmpeg.stop();
 	}
 
@@ -62,9 +82,10 @@
 			params.duration = timeFormatter(rangeValues[1] - rangeValues[0]);
 		}
 		console.log("cut params", params);
-
+		working = true;
 		const result = await ffmpeg.cut(params);
 		console.log("ffmpeg cut", result);
+		working = false;
 	}
 
 	function timeFormatter(currTime) {
@@ -72,8 +93,8 @@
 	}
 
 	function handleProgress(data) {
-		console.log("progress", data);
-		progress.set(data);
+		progressValue = data.progress;
+		progressText = data.estimation;
 	}
 
 	afterUpdate(() => {
@@ -103,14 +124,16 @@
 			/>
 
 			<button on:click={handleExecute}> execute </button>
-			<button on:click={killProcess}> stop </button>
-			<div>
-				<p>{$progress}</p>
-				<progress value={$progress} />
-			</div>
 		</div>
 	{:else}
 		<p>placeholder</p>
+	{/if}
+	{#if working}
+		<Progress
+			handleStop={killProcess}
+			value={progressValue}
+			text={progressText}
+		/>
 	{/if}
 </main>
 
