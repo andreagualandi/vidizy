@@ -12,12 +12,8 @@ function strToSeconds(string) {
     return hmsToSeconds(time[1], time[2], time[3]);
 }
 
-function roundToTwo(num) {
-    return +(Math.round(num + "e+2") + "e-2");
-}
-
 function secondsToHms(seconds) {
-    return new Date(seconds * 1000).toISOString().substr(14, 5)
+    return new Date(seconds * 1000).toISOString().slice(11, -5);
 }
 
-module.exports = { hmsToSeconds, strToSeconds, roundToTwo, secondsToHms };
+module.exports = { hmsToSeconds, strToSeconds, secondsToHms };

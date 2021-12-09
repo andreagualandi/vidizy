@@ -16,9 +16,7 @@ async function cut(args) {
     const { input, output, start, duration, overwrite } = args.data;
     port = getPortForProgress();
 
-    await ffmpeg.cut(input, output, overwrite, start, duration, handleProgress);
-    port.postMessage(100);
-    return;
+    return ffmpeg.cut(input, output, overwrite, start, duration, handleProgress);
 }
 
 function handleProgress(data) {

@@ -41,7 +41,7 @@
 		async function load() {
 			// We need to wrap the loop into an async function for this to work
 			for (var i = 1; i < 11; i++) {
-				progressValue = i / 10;
+				progressValue = i * 10;
 				progressText = "running...";
 				await timer(300); // then the created Promise can be awaited
 			}
@@ -89,12 +89,12 @@
 	}
 
 	function timeFormatter(currTime) {
-		return new Date(currTime * 1000).toISOString().substr(11, 12);
+		return new Date(currTime * 1000).toISOString().slice(11, -5);
 	}
 
 	function handleProgress(data) {
 		progressValue = data.progress;
-		progressText = data.estimation;
+		progressText = data.status;
 	}
 
 	afterUpdate(() => {

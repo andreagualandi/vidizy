@@ -6,11 +6,11 @@
 
 <div class="overlay">
     <div class="modal">
-        <progress {value} />
         <div class="status">
-            <div class="state">{text}</div>
+            <div class="state">Time remaining: {text}</div>
             <div class="percentage">{value}%</div>
         </div>
+        <progress {value} max="100" />
         <button on:click={handleStop}>Stop</button>
     </div>
 </div>
@@ -32,7 +32,7 @@
     }
     .modal {
         min-width: 300px;
-        min-height: 200px;
+        min-height: 110px;
         padding: 20px;
         align-items: center;
         justify-content: center;

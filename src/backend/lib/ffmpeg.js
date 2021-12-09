@@ -5,6 +5,7 @@ const { hmsToSeconds, strToSeconds, roundToTwo, secondsToHms } = require('./util
 
 const cmd = require('ffmpeg-static');
 let proc = null;
+let progressCallback = null;
 
 //NOTE: ffmpeg use stderr as output
 function execute(args, callback) {
@@ -17,6 +18,7 @@ function execute(args, callback) {
 
         proc.on('close', (code, signal) => {
             console.log(`Process terminated due to receipt of signal ${signal}`)
+            progressCallback({ progress: 100, status: "Time remaining: 00:00:00" })
             resolve();
         });
     })
@@ -24,6 +26,7 @@ function execute(args, callback) {
 
 async function cut(input, output, overwrite = true, start = null, duration = null, callback) {
     console.log('cut params:', input, output, start, duration);
+    progressCallback = callback;
     const params = ['-i', input];
     //ss befor -i for fast encode with less precision. ss after -i for more precision but much high encode time
     start && params.unshift('-ss', start);
@@ -33,7 +36,7 @@ async function cut(input, output, overwrite = true, start = null, duration = nul
 
     let time = 0;
     let progress = 0;
-    let estimation = 0;
+    let status = 'Preparing...';
     duration = strToSeconds(duration);
 
     return execute(params, (data) => {
@@ -43,14 +46,14 @@ async function cut(input, output, overwrite = true, start = null, duration = nul
         } else {
             time = parseTime(data);
             if (time && duration) {
-                progress = roundToTwo(time / duration);
+                progress = Math.round(time / duration * 100);
                 let speed = parseSpeed(data);
                 if (!isNaN(speed)) {
-                    estimation = secondsToHms((duration - time) / speed);
+                    status = 'Time remaining: ' + secondsToHms((duration - time) / speed);
                 }
             }
         }
-        callback({ progress: progress, estimation: estimation });
+        progressCallback({ progress: progress, status: status });
     });
 }
 

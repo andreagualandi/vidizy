@@ -28,6 +28,7 @@ button {
     margin: 0;
     background-color: #444f97;
     color: #B4B3BA;
+    font-size: 1.2em;
 }
 
 button:hover{
