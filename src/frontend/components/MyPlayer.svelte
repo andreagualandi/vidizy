@@ -7,19 +7,10 @@
     let duration;
     let paused = true;
 
-    let showControls = true;
-    let showControlsTimeout;
-
     // Used to track time of last mouse down event
     let lastMouseDown;
 
     function handleMove(e) {
-        // Make the controls visible, but fade out after
-        // 2.5 seconds of inactivity
-        clearTimeout(showControlsTimeout);
-        showControlsTimeout = setTimeout(() => (showControls = false), 2500);
-        showControls = true;
-
         if (!duration) return; // video not loaded yet
         if (e.type !== "touchmove" && !(e.buttons & 1)) return; // mouse not down
 
@@ -37,25 +28,19 @@
 
     function handleMouseup(e) {
         if (new Date() - lastMouseDown < 300) {
-            if (paused) e.target.play();
-            else e.target.pause();
+            paused ? e.target.play() : e.target.pause();
         }
     }
 
     function format(seconds) {
         if (isNaN(seconds)) return "...";
-
-        const minutes = Math.floor(seconds / 60);
-        seconds = Math.floor(seconds % 60);
-        if (seconds < 10) seconds = "0" + seconds;
-
-        return `${minutes}:${seconds}`;
+        return new Date(seconds * 1000).toISOString().slice(11, -5);
     }
 </script>
 
-<h1>{title}</h1>
+<h1 class="video-title">{title}</h1>
 
-<div>
+<div class="player">
     <video
         {poster}
         {src}
@@ -70,58 +55,43 @@
         <track kind="captions" />
     </video>
 
-    <div class="controls" style="opacity: {duration && showControls ? 1 : 0}">
+    <div class="controls">
         <progress value={time / duration || 0} />
 
         <div class="info">
-            <span class="time">{format(time)}</span>
-            <span
-                >click anywhere to {paused ? "play" : "pause"} / drag to seek</span
-            >
-            <span class="time">{format(duration)}</span>
+            <span class="time">{format(time)} / {format(duration)}</span>
+            <span>{paused ? "play" : "pause"}</span>
         </div>
     </div>
 </div>
 
 <style>
-    div {
-        position: relative;
+    .player {
+        display: flex;
+        flex-direction: column;
     }
 
     .controls {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        transition: opacity 1s;
+        background-color: #202020;
     }
 
     .info {
+        padding: 10px;
         display: flex;
-        width: 100%;
         justify-content: space-between;
     }
 
     span {
-        padding: 0.2em 0.5em;
         color: white;
         text-shadow: 0 0 8px black;
         font-size: 1.4em;
         opacity: 0.7;
     }
 
-    .time {
-        width: 3em;
-    }
-
-    .time:last-child {
-        text-align: right;
-    }
-
     progress {
         display: block;
         width: 100%;
         height: 10px;
-        -webkit-appearance: none;
         appearance: none;
     }
 
@@ -135,5 +105,12 @@
 
     video {
         width: 100%;
+    }
+
+    .video-title {
+        padding: 5px;
+        margin: 0px;
+        background-color: #202020;
+        text-align: center;
     }
 </style>

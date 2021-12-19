@@ -15,25 +15,16 @@
 	let working = false;
 	let progressValue = 0;
 	let progressText = "starting";
+	let rangeValues = [0, 1];
 
 	/*-- debug --*/
-	info = {
-		url: "fakeurl",
-		formats: [
-			{ id: 1, url: "fake", ext: "mp4", description: "fake descr" },
-		],
-		duration: 3476,
-		thumbnail: "",
-	};
-
-	let rangeValues = [0, info.duration];
 
 	onMount(async () => {
 		ffmpeg.setProgressCallback(handleProgress);
 	});
 
 	async function handleLoad(url) {
-		working = true;
+		/* working = true;
 
 		// Returns a Promise that resolves after "ms" Milliseconds
 		const timer = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -48,11 +39,28 @@
 		}
 
 		load();
-		return;
+		return; */
+		const test = "local-video:///home/andrea/Scaricati/test.mp4";
+		console.log("test", test);
+		info = {
+			url: test,
+			formats: [
+				{
+					id: 1,
+					url: "fake",
+					ext: "mp4",
+					description: "fake descr",
+				},
+			],
+			duration: 3476,
+			thumbnail: "",
+		};
+		rangeValues = [0, info.duration];
 
 		console.log("get url", url);
-		info = await ydl.getInfo(url);
+		//info = await ydl.getInfo(url);
 		outFile = await app.getDownloadPath(info.title);
+		rangeValues = [0, info.duration];
 	}
 
 	async function killProcess() {
@@ -89,6 +97,7 @@
 	}
 
 	function timeFormatter(currTime) {
+		console.log("FORMATTAZIONE", currTime);
 		return new Date(currTime * 1000).toISOString().slice(11, -5);
 	}
 
@@ -105,7 +114,7 @@
 <main>
 	<InputSubmit onSubmit={handleLoad} placeholder="Video url" />
 	{#if info}
-		<div class="flex-column" transition:fade>
+		<div class="flex-column color" transition:fade>
 			<div class="flex-column">
 				<MyPlayer
 					title={info.title}
@@ -150,5 +159,9 @@
 		display: flex;
 		flex-flow: column;
 		width: 100vh;
+	}
+
+	.color {
+		background-color: #292a34;
 	}
 </style>

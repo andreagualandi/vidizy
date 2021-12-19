@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, protocol } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const loadUrl = serve({ directory: 'public' });
@@ -14,7 +14,22 @@ function isDev() {
     return !app.isPackaged;
 }
 
+function fileHandler(request, callback) {
+    const url = request.url.replace(/^local-video:\/\//, '')
+    // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
+    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
+    try {
+        return callback(decodedUrl)
+    } catch (error) {
+        console.error(
+            'ERROR: registerLocalVideoProtocol: Could not get file path:',
+            error
+        )
+    }
+}
+
 function createWindow() {
+    protocol.registerFileProtocol('local-video', fileHandler);
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1024,
