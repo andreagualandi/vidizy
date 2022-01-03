@@ -46,7 +46,7 @@ function createWindow() {
 
 
     if (isDev()) {
-        mainWindow.loadURL(`http://localhost:5000`);
+        mainWindow.loadURL(`http://localhost:8080`);
         mainWindow.webContents.openDevTools();
     } else {
         loadUrl(mainWindow);

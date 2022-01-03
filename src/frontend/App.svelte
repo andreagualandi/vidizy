@@ -18,6 +18,8 @@
 	let rangeValues = [0, 1];
 
 	/*-- debug --*/
+	let time = 0;
+	let sliderElement;
 
 	onMount(async () => {
 		ffmpeg.setProgressCallback(handleProgress);
@@ -117,6 +119,7 @@
 		<div class="flex-column color" transition:fade>
 			<div class="flex-column">
 				<MyPlayer
+					{time}
 					title={info.title}
 					src={info.url}
 					poster={info.thumbnail}

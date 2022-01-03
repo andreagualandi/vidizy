@@ -11,7 +11,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-    "electron": "wait-on http://localhost:5000 && electron .",
+    "electron": "wait-on http://localhost:8080 && electron .",
     "electron-dev": "concurrently \"npm run dev\" \"npm run electron\"",
     "preelectron-pack": "npm run build",
     "electron-pack": "electron-builder"
@@ -19,25 +19,23 @@
   "author": "Andrea Gualandi",
   "license": "ISC",
   "dependencies": {
-    "ffmpeg-static": "^4.4.0",
-    "mediaelement": "^5.0.4",
-    "svelte-range-slider-pips": "^2.0.0",
+    "ffmpeg-static": "^4.4.1",
     "youtube-dl-wrap": "^2.1.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.1.1",
-    "concurrently": "^6.4.0",
-    "electron": "^16.0.4",
+    "@rollup/plugin-node-resolve": "^13.1.2",
+    "concurrently": "^7.0.0",
+    "electron": "^16.0.5",
     "electron-builder": "^22.14.5",
     "electron-serve": "^1.1.0",
-    "rollup": "^2.61.1",
+    "rollup": "^2.62.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
-    "sirv-cli": "^1.0.14",
+    "sirv-cli": "^2.0.1",
     "svelte": "^3.44.3",
     "wait-on": "^6.0.0"
   }
