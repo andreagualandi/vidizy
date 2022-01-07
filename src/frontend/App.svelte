@@ -19,7 +19,6 @@
 
 	/*-- debug --*/
 	let time = 0;
-	let sliderElement;
 
 	onMount(async () => {
 		ffmpeg.setProgressCallback(handleProgress);
@@ -45,6 +44,7 @@
 		const test = "local-video:///home/andrea/Scaricati/test.mp4";
 		console.log("test", test);
 		info = {
+			title: "test",
 			url: test,
 			formats: [
 				{
@@ -124,7 +124,7 @@
 					src={info.url}
 					poster={info.thumbnail}
 				/>
-				<Cutter bind:rangeValues formatter={timeFormatter} />
+				<Cutter bind:rangeValues />
 			</div>
 
 			<Select options={info.formats} bind:selected={selectedFormat} />
