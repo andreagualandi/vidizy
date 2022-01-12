@@ -11,8 +11,13 @@
     };
 
     const df = DateTimeFormatter.ofPattern("HH:mm:ss");
-    let startT = LocalTime.ofSecondOfDay(rangeValues[0]).format(df);
-    let endT = LocalTime.ofSecondOfDay(rangeValues[1]).format(df);
+    setTime(rangeValues[0], "start");
+    setTime(rangeValues[1], "end");
+
+    function setTime(seconds, variable) {
+        seconds = Math.floor(seconds);
+        obj[variable] = LocalTime.ofSecondOfDay(seconds).format(df);
+    }
 
     function formatter(data, num) {
         try {
@@ -25,37 +30,22 @@
         }
     }
 
-    function setTime2(seconds, variable) {
-        seconds = Math.floor(seconds);
-        variable = LocalTime.ofSecondOfDay(seconds).format(df);
-    }
-
-    function setTime(seconds, variable) {
-        seconds = Math.floor(seconds);
-        let data = LocalTime.ofSecondOfDay(seconds).format(df);
-        if (variable === "start") {
-            startT = data;
-        } else {
-            endT = data;
-        }
-    }
-
     $: diff = LocalTime.ofSecondOfDay(rangeValues[1] - rangeValues[0]).format(df);
 
-    $: isValidStart = formatter(startT, 0);
-    $: isValidEnd = formatter(endT, 1);
+    $: isValidStart = formatter(obj.start, 0);
+    $: isValidEnd = formatter(obj.end, 1);
 </script>
 
 <div class="cutter">
     <div class="inputs">
         <div class="line-layout">
-            <button class="button-set" on:click={setTime(currTime, startT)}>Start</button>
-            <input class:not-valid={!isValidStart} bind:value={startT} />
+            <button class="button-set" on:click={setTime(currTime, "start")}>Start</button>
+            <input class:not-valid={!isValidStart} bind:value={obj.start} />
             <button class="button-get" on:click={onClick(rangeValues[0])}>^</button>
         </div>
         <div class="line-layout">
             <button class="button-set" on:click={setTime(currTime, "end")}>End</button>
-            <input class:not-valid={!isValidEnd} bind:value={endT} />
+            <input class:not-valid={!isValidEnd} bind:value={obj.end} />
             <button class="button-get" on:click={onClick(rangeValues[1])}>^</button>
         </div>
     </div>
