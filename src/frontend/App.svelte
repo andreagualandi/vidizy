@@ -108,6 +108,11 @@
 		progressText = data.status;
 	}
 
+	function handleSeek(seconds) {
+		console.log("seek", seconds);
+		time = seconds;
+	}
+
 	afterUpdate(() => {
 		//console.log(rangeValues);
 	});
@@ -118,22 +123,14 @@
 	{#if info}
 		<div class="flex-column color" transition:fade>
 			<div class="flex-column">
-				<MyPlayer
-					{time}
-					title={info.title}
-					src={info.url}
-					poster={info.thumbnail}
-				/>
-				<Cutter bind:rangeValues />
+				<MyPlayer bind:time title={info.title} src={info.url} poster={info.thumbnail} />
+				<div class="params">
+					<Cutter bind:rangeValues currTime={time} onClick={handleSeek} />
+					<Select options={info.formats} bind:selected={selectedFormat} />
+				</div>
 			</div>
 
-			<Select options={info.formats} bind:selected={selectedFormat} />
-
-			<InputSubmit
-				onSubmit={handleOpenFolder}
-				bind:text={outFile}
-				placeholder="Output"
-			/>
+			<InputSubmit onSubmit={handleOpenFolder} bind:text={outFile} placeholder="Output" />
 
 			<button on:click={handleExecute}> execute </button>
 		</div>
@@ -141,11 +138,7 @@
 		<p>placeholder</p>
 	{/if}
 	{#if working}
-		<Progress
-			handleStop={killProcess}
-			value={progressValue}
-			text={progressText}
-		/>
+		<Progress handleStop={killProcess} value={progressValue} text={progressText} />
 	{/if}
 </main>
 
@@ -162,6 +155,9 @@
 		display: flex;
 		flex-flow: column;
 		width: 100vh;
+	}
+	.params {
+		display: flex;
 	}
 
 	.color {

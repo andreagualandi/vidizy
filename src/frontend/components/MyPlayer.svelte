@@ -2,8 +2,8 @@
     export let title = "Video";
     export let src;
     export let poster;
+    export let time = 0;
     // These values are bound to properties of the video
-    let time = 0;
     let duration;
     let paused = true;
 
@@ -14,8 +14,7 @@
         if (!duration) return; // video not loaded yet
         if (e.type !== "touchmove" && !(e.buttons & 1)) return; // mouse not down
 
-        const clientX =
-            e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+        const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
         const { left, right } = this.getBoundingClientRect();
         time = (duration * (clientX - left)) / (right - left);
     }
