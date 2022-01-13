@@ -126,10 +126,10 @@
 				<MyPlayer bind:time title={info.title} src={info.url} poster={info.thumbnail} />
 				<div class="params">
 					<Cutter bind:rangeValues currTime={time} onClick={handleSeek} />
-					<Select options={info.formats} bind:selected={selectedFormat} />
 				</div>
 			</div>
 
+			<Select options={info.formats} bind:selected={selectedFormat} />
 			<InputSubmit onSubmit={handleOpenFolder} bind:text={outFile} placeholder="Output" />
 
 			<button on:click={handleExecute}> execute </button>
@@ -158,6 +158,8 @@
 	}
 	.params {
 		display: flex;
+		justify-content: center;
+		padding: 15px 0px;
 	}
 
 	.color {

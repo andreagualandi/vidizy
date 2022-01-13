@@ -19,10 +19,10 @@
 
     .input-form input {
         width: 100%;
-        height: 2em;
         font-size: inherit;
         border-radius: 2px 0px 0px 2px;
         border: none;
+        padding: 5px 5px;
     }
 
     .input-form input:focus-visible {

@@ -43,36 +43,31 @@
             <input class:not-valid={!isValidStart} bind:value={obj.start} />
             <button class="button-get" on:click={onClick(rangeValues[0])}>^</button>
         </div>
+        <p>{diff}</p>
         <div class="line-layout">
             <button class="button-set" on:click={setTime(currTime, "end")}>End</button>
             <input class:not-valid={!isValidEnd} bind:value={obj.end} />
             <button class="button-get" on:click={onClick(rangeValues[1])}>^</button>
         </div>
     </div>
-    <p>Duration: {diff}</p>
 </div>
 
 <style>
     .cutter {
         display: flex;
-        padding: 10px;
         flex-direction: column;
         width: 570px;
     }
     .inputs {
         display: flex;
-        font-size: inherit;
+        font-size: 1.1em;
         justify-content: space-between;
     }
     p {
-        margin: 5px 0px 0px 0px;
-        text-align: center;
-        width: 100%;
-        background-color: #292a34;
+        margin: 0;
     }
     .not-valid {
-        border-style: solid;
-        border-color: red;
+        background-color: #a93c3c;
     }
     .line-layout {
         display: flex;
