@@ -21,12 +21,65 @@ input:focus-visible{
     outline-color: #fff;
 }
 
-select{
-    background: #444452;
-    color: #B4B3BA;
+select {
+    /* Reset Select */
+    /*appearance: none;*/
+    outline: 0;
     border: 1px solid hsl(0deg 0% 19%);
     border-radius: 2px;
-} 
+    box-shadow: none;
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #B4B3BA;
+    background-color: #444452;
+    background-image: none;
+    cursor: pointer;
+
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    border-radius: .25em;
+    overflow: hidden;
+  }
+  select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #34495e;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  select:hover::after {
+    color: #f39c12;
+  }
+  /* Custom Select wrapper
+  .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    border-radius: .25em;
+    overflow: hidden;
+  }
+  /* Arrow 
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #34495e;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  /* Transition 
+  .select:hover::after {
+    color: #f39c12;
+  }*/
 
 button {
     border: 1px solid hsl(0deg 0% 19%);
