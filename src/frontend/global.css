@@ -21,6 +21,13 @@ input:focus-visible{
     outline-color: #fff;
 }
 
+select{
+    background: #444452;
+    color: #B4B3BA;
+    border: 1px solid hsl(0deg 0% 19%);
+    border-radius: 2px;
+} 
+
 button {
     border: 1px solid hsl(0deg 0% 19%);
     border-radius: 2px;
