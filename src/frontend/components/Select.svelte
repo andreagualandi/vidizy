@@ -4,6 +4,7 @@
 </script>
 
 <select bind:value={selected}>
+    <option value="" disabled selected>Select a format</option>
     {#each options as option}
         <option value={option}>{option.description}</option>
     {/each}
@@ -14,5 +15,6 @@
         width: 100%;
         height: 100%;
         padding: 5px;
+        font-size: inherit;
     }
 </style>

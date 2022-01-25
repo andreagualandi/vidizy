@@ -15,6 +15,7 @@
         justify-content: center;
         width: 100vh;
         font-size: 1.2em;
+        margin: 10px 0px;
     }
 
     .input-form input {

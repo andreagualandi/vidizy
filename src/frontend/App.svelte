@@ -10,7 +10,7 @@
 	import { afterUpdate, onMount } from "svelte";
 
 	let outFile = "";
-	let selectedFormat = {};
+	let selectedFormat = "";
 	let info;
 	let working = false;
 	let progressValue = 0;
@@ -149,6 +149,8 @@
 		justify-content: center;
 		align-items: center;
 		padding: 20px;
+		height: 100%;
+		box-sizing: border-box;
 	}
 
 	.flex-column {
