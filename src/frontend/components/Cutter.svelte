@@ -30,7 +30,12 @@
         }
     }
 
-    $: diff = LocalTime.ofSecondOfDay(rangeValues[1] - rangeValues[0]).format(df);
+    function calcDiff() {
+        const diff = Math.abs(rangeValues[1] - rangeValues[0]);
+        return LocalTime.ofSecondOfDay(diff).format(df);
+    }
+
+    $: diff = calcDiff();
 
     $: isValidStart = formatter(obj.start, 0);
     $: isValidEnd = formatter(obj.end, 1);

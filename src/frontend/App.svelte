@@ -41,7 +41,8 @@
 
 		load();
 		return; */
-		const test = "local-video:///home/andrea/Scaricati/test.mp4";
+
+		/*const test = "local-video:///home/andrea/Scaricati/test.mp4";
 		console.log("test", test);
 		info = {
 			title: "test",
@@ -57,10 +58,10 @@
 			duration: 3476,
 			thumbnail: "",
 		};
-		rangeValues = [0, info.duration];
+		rangeValues = [0, info.duration];*/
 
 		console.log("get url", url);
-		//info = await ydl.getInfo(url);
+		info = await ydl.getInfo(url);
 		outFile = await app.getDownloadPath(info.title);
 		rangeValues = [0, info.duration];
 	}
