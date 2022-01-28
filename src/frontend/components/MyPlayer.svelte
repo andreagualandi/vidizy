@@ -6,6 +6,8 @@
     // These values are bound to properties of the video
     let duration;
     let paused = true;
+    let videoElement;
+    let volume = 0.25;
 
     // Used to track time of last mouse down event
     let lastMouseDown;
@@ -31,6 +33,19 @@
         }
     }
 
+    function handlePlayPause() {
+        paused ? videoElement.play() : videoElement.pause();
+    }
+
+    function handleToStart() {
+        time = 0;
+    }
+
+    function handleToEnd() {
+        if (!duration) return;
+        time = duration;
+    }
+
     function format(seconds) {
         if (isNaN(seconds)) return "...";
         return new Date(seconds * 1000).toISOString().slice(11, -5);
@@ -43,6 +58,7 @@
     <video
         {poster}
         {src}
+        bind:this={videoElement}
         on:mousemove={handleMove}
         on:touchmove|preventDefault={handleMove}
         on:mousedown={handleMousedown}
@@ -50,6 +66,7 @@
         bind:currentTime={time}
         bind:duration
         bind:paused
+        bind:volume
     >
         <track kind="captions" />
     </video>
@@ -59,7 +76,10 @@
 
         <div class="info">
             <span class="time">{format(time)} / {format(duration)}</span>
-            <span>{paused ? "play" : "pause"}</span>
+            <span on:click|preventDefault={handleToStart}>start</span>
+            <span on:click|preventDefault={handlePlayPause}>{paused ? "play" : "pause"}</span>
+            <span on:click|preventDefault={handleToEnd}>end</span>
+            <input type="range" min="0" max="1" step="0.01" bind:value={volume} />
         </div>
     </div>
 </div>

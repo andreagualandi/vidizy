@@ -21,7 +21,6 @@
 
     function formatter(data, num) {
         try {
-            console.log("formatto", data);
             let sec = LocalTime.parse(data, df).get(ChronoField.SECOND_OF_DAY);
             rangeValues[num] = sec;
             return true;
@@ -30,12 +29,12 @@
         }
     }
 
-    function calcDiff() {
-        const diff = Math.abs(rangeValues[1] - rangeValues[0]);
+    function calcDiff(start, end) {
+        const diff = Math.abs(end - start);
         return LocalTime.ofSecondOfDay(diff).format(df);
     }
 
-    $: diff = calcDiff();
+    $: diff = calcDiff(rangeValues[0], rangeValues[1]);
 
     $: isValidStart = formatter(obj.start, 0);
     $: isValidEnd = formatter(obj.end, 1);
