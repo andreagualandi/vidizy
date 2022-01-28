@@ -63,7 +63,6 @@ export default [
                 targets: [
                     { src: 'src/frontend/index.html', dest: 'public' },
                     { src: 'src/frontend/global.css', dest: 'public' },
-                    { src: 'node_modules/mediaelement/build/mejs-controls.svg', dest: 'public' }
                 ]
             }),
 

@@ -1,4 +1,7 @@
 <script>
+    import Fa from "svelte-fa";
+    import { faPlay, faPause, faStepBackward, faStepForward } from "@fortawesome/free-solid-svg-icons";
+
     export let title = "Video";
     export let src;
     export let poster;
@@ -47,7 +50,9 @@
     }
 
     function format(seconds) {
-        if (isNaN(seconds)) return "...";
+        if (isNaN(seconds)) {
+            seconds = 0;
+        }
         return new Date(seconds * 1000).toISOString().slice(11, -5);
     }
 </script>
@@ -76,9 +81,19 @@
 
         <div class="info">
             <span class="time">{format(time)} / {format(duration)}</span>
-            <span on:click|preventDefault={handleToStart}>start</span>
-            <span on:click|preventDefault={handlePlayPause}>{paused ? "play" : "pause"}</span>
-            <span on:click|preventDefault={handleToEnd}>end</span>
+
+            <div class="buttons">
+                <span class="button" on:click|preventDefault={handleToStart}><Fa icon={faStepBackward} /></span>
+                <span class="button" on:click|preventDefault={handlePlayPause}>
+                    {#if paused}
+                        <Fa icon={faPlay} />
+                    {:else}
+                        <Fa icon={faPause} />
+                    {/if}
+                </span>
+                <span class="button" on:click|preventDefault={handleToEnd}><Fa icon={faStepForward} /></span>
+            </div>
+
             <input type="range" min="0" max="1" step="0.01" bind:value={volume} />
         </div>
     </div>
@@ -98,6 +113,17 @@
         padding: 10px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+    }
+
+    .button {
+        cursor: pointer;
     }
 
     span {

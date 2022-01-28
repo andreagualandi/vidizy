@@ -19,8 +19,10 @@
   "author": "Andrea Gualandi",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@js-joda/core": "^5.2.0",
     "ffmpeg-static": "^4.4.1",
+    "svelte-fa": "^2.4.0",
     "youtube-dl-wrap": "^2.1.1"
   },
   "devDependencies": {
